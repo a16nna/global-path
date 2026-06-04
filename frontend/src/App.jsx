@@ -1,10 +1,18 @@
+import RoadmapResult from "./components/RoadmapResult";
+
 function App() {
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">🌍 Global Path</h1>
+
+      <h1 className="text-center mb-4">
+        🌍 Global Path
+      </h1>
 
       <div className="card p-4 shadow">
-        <h3 className="mb-3">Generate Your Study Abroad Roadmap</h3>
+
+        <h3 className="mb-3">
+          Generate Your Study Abroad Roadmap
+        </h3>
 
         <div className="mb-3">
           <label className="form-label">Country</label>
@@ -30,14 +38,18 @@ function App() {
           <input
             type="number"
             className="form-control"
-            placeholder="Enter your CGPA"
+            placeholder="Enter CGPA"
           />
         </div>
 
         <button className="btn btn-primary">
           Generate Roadmap
         </button>
+
       </div>
+
+      <RoadmapResult />
+
     </div>
   );
 }
