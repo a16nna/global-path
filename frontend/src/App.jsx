@@ -1,56 +1,20 @@
-import RoadmapResult from "./components/RoadmapResult";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RoadmapForm from "./pages/RoadmapForm";
 
 function App() {
   return (
-    <div className="container mt-5">
-
-      <h1 className="text-center mb-4">
-        🌍 Global Path
-      </h1>
-
-      <div className="card p-4 shadow">
-
-        <h3 className="mb-3">
-          Generate Your Study Abroad Roadmap
-        </h3>
-
-        <div className="mb-3">
-          <label className="form-label">Country</label>
-          <select className="form-select">
-            <option>Canada</option>
-            <option>Australia</option>
-            <option>UK</option>
-            <option>Germany</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Specialization</label>
-          <select className="form-select">
-            <option>Computer Science</option>
-            <option>Data Science</option>
-            <option>ECE</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">CGPA</label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Enter CGPA"
-          />
-        </div>
-
-        <button className="btn btn-primary">
-          Generate Roadmap
-        </button>
-
-      </div>
-
-      <RoadmapResult />
-
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/roadmap" element={<RoadmapForm />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
