@@ -18,7 +18,14 @@ const SPECIALISATION_LABELS = {
   'biotech': 'Biotechnology',
 };
 
-const INTAKES = ['Fall 2025', 'Winter 2026', 'Fall 2026', 'Winter 2027'];
+const INTAKES = [
+  'Winter 2026',
+  'Fall 2026',
+  'Spring 2027',
+  'Summer 2027',
+  'Fall 2027',
+  'Winter 2027',
+];
 
 const ELIGIBILITY = {
   REACH: 'reach',
