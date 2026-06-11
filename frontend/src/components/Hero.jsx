@@ -1,20 +1,18 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Globe from "./Globe";
 
-function Hero() {
+export default function Hero() {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
 
-      {/* Glow 1 */}
       <div className="absolute left-[-200px] top-[100px] h-[500px] w-[500px] rounded-full bg-blue-500/20 blur-[140px]" />
 
-      {/* Glow 2 */}
       <div className="absolute right-[-200px] bottom-[100px] h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[140px]" />
 
-      {/* Glow 3 */}
-      <div className="absolute top-[30%] left-[50%] h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
-
       <div className="relative z-20 mx-auto max-w-6xl px-6 text-center">
+
+        <Globe />
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -36,9 +34,7 @@ function Hero() {
             fontWeight: 600,
           }}
         >
-          <span className="block">
-            Your Roadmap To
-          </span>
+          <span className="block">Your Roadmap To</span>
 
           <span className="bg-gradient-to-r from-cyan-300 via-white to-purple-400 bg-clip-text text-transparent">
             Studying Abroad
@@ -78,5 +74,3 @@ function Hero() {
     </section>
   );
 }
-
-export default Hero;
