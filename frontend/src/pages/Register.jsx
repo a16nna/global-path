@@ -44,7 +44,7 @@ function Register() {
       navigate("/roadmap");
     } catch (error) {
       alert(
-        error.response?.data?.message ||
+        error.response?.data?.error ||
           "Registration failed"
       );
     } finally {

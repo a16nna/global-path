@@ -28,3 +28,10 @@ body {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+section {
+  scroll-margin-top: 100px;
+}

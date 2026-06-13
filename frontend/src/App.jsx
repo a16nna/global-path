@@ -4,6 +4,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RoadmapForm from "./pages/RoadmapForm";
+import RoadmapResult from "./components/RoadmapResult";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/roadmap" element={<RoadmapForm />} />
+        <Route path="/result" element={<RoadmapResult />} />
       </Routes>
     </BrowserRouter>
   );
