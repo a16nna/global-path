@@ -8,7 +8,7 @@ function getGenAI() {
 }
 
 async function generateRoadmapWithAI({ pathway, eligibleUniversities, userInputs, countryLabel, specialisationLabel }) {
-  const model = getGenAI().getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = getGenAI().getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const prompt = buildPrompt({ pathway, eligibleUniversities, userInputs, countryLabel, specialisationLabel });
 
