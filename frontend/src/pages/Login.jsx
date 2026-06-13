@@ -36,7 +36,7 @@ function Login() {
       navigate("/roadmap");
     } catch (error) {
       alert(
-        error.response?.data?.message ||
+        error.response?.data?.error ||
           "Login failed"
       );
     } finally {

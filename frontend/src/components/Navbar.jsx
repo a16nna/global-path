@@ -16,10 +16,21 @@ function Navbar() {
           </h1>
 
           <div className="hidden gap-8 text-sm text-gray-300 md:flex">
-            <a href="#">Home</a>
-            <a href="#">Features</a>
-            <a href="#">Countries</a>
-            <a href="#">About</a>
+            <a href="#home" className="hover:text-white transition">
+              Home
+            </a>
+
+            <a href="#features" className="hover:text-white transition">
+              Features
+            </a>
+
+            <a href="#how-it-works" className="hover:text-white transition">
+              How It Works
+            </a>
+
+            <a href="#problem" className="hover:text-white transition">
+              About
+            </a>
           </div>
 
           <button className="rounded-xl bg-white px-5 py-2 font-semibold text-black transition hover:scale-105">
