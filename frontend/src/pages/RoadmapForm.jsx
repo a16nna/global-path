@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 
@@ -15,7 +15,22 @@ function RoadmapForm() {
     targetIntake: "",
   });
 
-  const [loading, setLoading] = useState(false); // ← added here
+  const [options, setOptions] = useState({
+    countries: [],
+    specialisations: [],
+    intakes: [],
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [optionsError, setOptionsError] = useState(false);
+
+  // Fetch dropdown options from the backend on mount
+  useEffect(() => {
+    api
+      .get("/meta/options")
+      .then((res) => setOptions(res.data))
+      .catch(() => setOptionsError(true));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,7 +47,12 @@ function RoadmapForm() {
         ieltsScore: formData.ieltsScore ? parseFloat(formData.ieltsScore) : null,
         budget: formData.budget ? parseInt(formData.budget) : null,
       });
-      navigate("/result", { state: { roadmap: response.data } });
+      navigate("/result", {
+        state: {
+          roadmap: response.data,
+          roadmapId: response.data.roadmapId,
+        },
+      });
     } catch (error) {
       alert(error.response?.data?.error || "Failed to generate roadmap");
     } finally {
@@ -40,76 +60,217 @@ function RoadmapForm() {
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-white/10 bg-black/40 p-4 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 transition";
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-white">
+      {/* Background glows */}
       <div className="absolute left-[-200px] top-[100px] h-[500px] w-[500px] rounded-full bg-cyan-500/10 blur-[140px]" />
       <div className="absolute right-[-200px] bottom-[100px] h-[500px] w-[500px] rounded-full bg-purple-500/10 blur-[140px]" />
 
       <div className="relative z-10 mx-auto max-w-2xl px-6 py-24">
-        <Link to="/" className="mb-8 inline-block text-cyan-400 transition hover:text-cyan-300">
+        <Link
+          to="/"
+          className="mb-8 inline-block text-cyan-400 transition hover:text-cyan-300"
+        >
           ← Back Home
         </Link>
 
-        <h1 className="mb-3 text-5xl text-white md:text-6xl" style={{ fontFamily: "Cormorant Garamond", fontWeight: 600 }}>
+        <h1
+          className="mb-3 text-5xl text-white md:text-6xl"
+          style={{ fontFamily: "Cormorant Garamond", fontWeight: 600 }}
+        >
           Generate Your Roadmap
         </h1>
 
         <p className="mb-10 text-gray-400">
-          Get personalized university recommendations, eligibility checks, costs, timelines and visa guidance.
+          Get personalized university recommendations, eligibility checks,
+          costs, timelines and visa guidance.
         </p>
 
-        <form onSubmit={handleSubmit} className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
+        {optionsError && (
+          <p className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            Could not load options from the server. Please refresh and try
+            again.
+          </p>
+        )}
+
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+        >
           <div className="space-y-5">
 
-            <select name="country" value={formData.country} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4 text-white">
+            {/* Country */}
+            <select
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            >
               <option value="">Select Country</option>
-              <option value="canada">Canada</option>
-              <option value="australia">Australia</option>
-              <option value="uk">United Kingdom</option>
-              <option value="germany">Germany</option>
+              {options.countries.length > 0
+                ? options.countries.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))
+                : // Fallback if fetch failed or is still loading
+                  [
+                    { value: "canada", label: "Canada" },
+                    { value: "australia", label: "Australia" },
+                    { value: "uk", label: "United Kingdom" },
+                    { value: "germany", label: "Germany" },
+                  ].map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
             </select>
 
-            <select name="specialisation" value={formData.specialisation} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4 text-white">
+            {/* Specialisation */}
+            <select
+              name="specialisation"
+              value={formData.specialisation}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            >
               <option value="">Select Specialisation</option>
-              <option value="cs">Computer Science</option>
-              <option value="data-science">Data Science</option>
-              <option value="ece">Electronics & Communication Engineering</option>
-              <option value="mechanical">Mechanical Engineering</option>
-              <option value="civil">Civil Engineering</option>
-              <option value="biotech">Biotechnology</option>
+              {options.specialisations.length > 0
+                ? options.specialisations.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))
+                : [
+                    { value: "cs", label: "Computer Science" },
+                    { value: "data-science", label: "Data Science" },
+                    {
+                      value: "ece",
+                      label: "Electronics & Communication Engineering",
+                    },
+                    { value: "mechanical", label: "Mechanical Engineering" },
+                    { value: "civil", label: "Civil Engineering" },
+                    { value: "biotech", label: "Biotechnology" },
+                  ].map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
             </select>
 
-            <input type="number" step="0.01" name="cgpa" placeholder="CGPA"
-              value={formData.cgpa} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4" />
+            {/* CGPA */}
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              max="10"
+              name="cgpa"
+              placeholder="CGPA (e.g. 7.8)"
+              value={formData.cgpa}
+              onChange={handleChange}
+              className={inputClass}
+            />
 
-            <input type="number" step="0.5" name="ieltsScore" placeholder="IELTS Score"
-              value={formData.ieltsScore} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4" />
+            {/* IELTS */}
+            <input
+              type="number"
+              step="0.5"
+              min="0"
+              max="9"
+              name="ieltsScore"
+              placeholder="IELTS Score (e.g. 7.0)"
+              value={formData.ieltsScore}
+              onChange={handleChange}
+              className={inputClass}
+            />
 
-            <input type="number" name="greScore" placeholder="GRE Score"
-              value={formData.greScore} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4" />
+            {/* GRE */}
+            <input
+              type="number"
+              min="260"
+              max="340"
+              name="greScore"
+              placeholder="GRE Score (e.g. 315)"
+              value={formData.greScore}
+              onChange={handleChange}
+              className={inputClass}
+            />
 
-            <input type="number" name="budget" placeholder="Budget (INR)"
-              value={formData.budget} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4" />
+            {/* Budget */}
+            <input
+              type="number"
+              min="0"
+              name="budget"
+              placeholder="Budget in INR (e.g. 5000000)"
+              value={formData.budget}
+              onChange={handleChange}
+              className={inputClass}
+            />
 
-            <select name="targetIntake" value={formData.targetIntake} onChange={handleChange}
-              className="w-full rounded-xl border border-white/10 bg-black/40 p-4 text-white">
-              <option value="">Target Intake</option>
-              <option value="Winter 2026">Winter 2026</option>
-              <option value="Spring 2027">Spring 2027</option>
-              <option value="Fall 2026">Fall 2026</option>
-              <option value="Fall 2027">Fall 2027</option>
-              <option value="Winter 2027">Winter 2027</option>
+            {/* Target Intake */}
+            <select
+              name="targetIntake"
+              value={formData.targetIntake}
+              onChange={handleChange}
+              required
+              className={inputClass}
+            >
+              <option value="">Select Target Intake</option>
+              {options.intakes.length > 0
+                ? options.intakes.map((intake) => (
+                    <option key={intake} value={intake}>
+                      {intake}
+                    </option>
+                  ))
+                : [
+                    "Winter 2026",
+                    "Fall 2026",
+                    "Spring 2027",
+                    "Summer 2027",
+                    "Fall 2027",
+                    "Winter 2027",
+                  ].map((intake) => (
+                    <option key={intake} value={intake}>
+                      {intake}
+                    </option>
+                  ))}
             </select>
 
-            <button type="submit" disabled={loading}
-              className="mt-4 w-full rounded-xl bg-white py-4 font-semibold text-black transition hover:scale-[1.02]">
-              {loading ? "Generating..." : "Generate Roadmap"}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-4 w-full rounded-xl bg-white py-4 font-semibold text-black transition hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg
+                    className="h-4 w-4 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    />
+                  </svg>
+                  Generating… this may take 10–20s
+                </span>
+              ) : (
+                "Generate Roadmap"
+              )}
             </button>
 
           </div>
