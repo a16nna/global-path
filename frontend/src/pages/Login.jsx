@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PlaneTakeoff, Mail, Lock, Loader2 } from "lucide-react";
 import Background from "../components/layout/Background";
@@ -7,6 +7,8 @@ import { login } from "../services/auth";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = location.state?.from || "/dashboard";
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ export default function Login() {
     try {
       const data = await login(form);
       if (data?.token) localStorage.setItem("gp_token", data.token);
-      navigate("/dashboard");
+      navigate(redirectTo);
     } catch {
       setError("Check-in failed. Check your details and try again.");
     } finally {

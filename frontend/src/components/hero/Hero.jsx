@@ -5,8 +5,11 @@ import Stars from "./Stars";
 import FlightPaths from "./FlightPaths";
 import Globe from "./Globe";
 import Button from "../ui/Button";
+import { useRoadmapCta } from "../../hooks/useRoadmapCta";
 
 export default function Hero() {
+  const roadmapCta = useRoadmapCta();
+
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-night pt-28 pb-16">
       <Stars />
@@ -59,7 +62,7 @@ export default function Hero() {
             transition={{ delay: 0.7 }}
             className="mt-9 flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
           >
-            <Button as={Link} to="/roadmap">
+            <Button as={Link} {...roadmapCta}>
               Generate my roadmap
             </Button>
             <Button as="a" href="#how-it-works" variant="ghost">

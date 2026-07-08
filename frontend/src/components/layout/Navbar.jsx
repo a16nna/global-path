@@ -3,11 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Menu, X, PlaneTakeoff } from "lucide-react";
 import { NAV_LINKS } from "../../constants/nav";
+import { useRoadmapCta } from "../../hooks/useRoadmapCta";
 import Button from "../ui/Button";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const roadmapCta = useRoadmapCta();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -55,7 +57,7 @@ export default function Navbar() {
           <NavLink to="/login" className="eyebrow text-paper-dim transition-colors hover:text-paper">
             Log in
           </NavLink>
-          <Button as={Link} to="/roadmap" className="!px-5 !py-2.5 text-sm">
+          <Button as={Link} {...roadmapCta} className="!px-5 !py-2.5 text-sm">
             Get started
           </Button>
         </div>
@@ -90,7 +92,7 @@ export default function Navbar() {
             Log in
           </Link>
           <Link
-            to="/roadmap"
+            {...roadmapCta}
             onClick={() => setOpen(false)}
             className="mt-1 rounded-full bg-amber px-3 py-2.5 text-center font-semibold text-night-deep"
           >

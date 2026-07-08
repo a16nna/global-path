@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { PlaneTakeoff } from "lucide-react";
 import Button from "../ui/Button";
+import { useRoadmapCta } from "../../hooks/useRoadmapCta";
 
 export default function CTA() {
+  const roadmapCta = useRoadmapCta();
+
   return (
     <section className="relative py-28">
       <div className="mx-auto max-w-4xl px-6">
@@ -26,7 +29,7 @@ export default function CTA() {
             forum thread about IELTS cutoffs.
           </p>
           <div className="mt-9">
-            <Button as={Link} to="/roadmap">
+            <Button as={Link} {...roadmapCta}>
               Generate my roadmap
             </Button>
           </div>

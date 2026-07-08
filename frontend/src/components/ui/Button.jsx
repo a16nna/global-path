@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { classNames } from "../../utils/format";
 
@@ -10,31 +11,26 @@ const VARIANTS = {
     "bg-stamp text-night-deep hover:bg-stamp-dim",
 };
 
-const MotionComponents = {
-  button: motion.button,
-  a: motion.a,
-  div: motion.div,
-  span: motion.span,
-};
-
 export default function Button({
   as = "button",
   variant = "primary",
-  className = "",
+  className,
   children,
   ...props
 }) {
-  const Comp = MotionComponents[as] || motion.button;
+  // `as` can be a tag name ("a", "button") or a component reference (Link).
+  // motion[as] only resolves tag-name strings; component references need
+  // motion(Component) instead, memoized so identity stays stable across renders.
+  const Comp = useMemo(() => {
+    if (typeof as === "string") return motion[as] ?? motion.button;
+    return motion(as);
+  }, [as]);
 
   return (
     <Comp
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
-      transition={{
-        type: "spring",
-        stiffness: 400,
-        damping: 22,
-      }}
+      transition={{ type: "spring", stiffness: 400, damping: 22 }}
       className={classNames(
         "inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-semibold tracking-tight transition-colors duration-200",
         VARIANTS[variant],
