@@ -1,5 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-night: #0b0e1a;
+  --color-night-alt: #12162a;
+  --color-night-deep: #060812;
+  --color-paper: #f5f1e8;
+  --color-paper-dim: #cfc9ba;
+  --color-stamp: #2fa88f;
+  --color-stamp-dim: #1f7261;
+  --color-amber: #e8a33d;
+  --color-amber-dim: #a97527;
+  --color-coral: #e8604c;
+  --color-line: rgba(245, 241, 232, 0.14);
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
 
 html,
 body,
@@ -7,13 +25,22 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: black;
-  color: white;
+  background: var(--color-night);
+  color: var(--color-paper);
 }
 
 body {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-body);
   overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(47, 168, 143, 0.10), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 100% 20%, rgba(232, 163, 61, 0.08), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-night-deep);
 }
 
 ::-webkit-scrollbar {
@@ -21,10 +48,68 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.15);
+  background: rgba(245, 241, 232, 0.15);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+/* Perforated ticket edge — the recurring signature motif */
+.ticket-perf {
+  position: relative;
+}
+
+.ticket-perf::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--perf-left, 0);
+  width: 0;
+  border-left: 2px dashed rgba(245, 241, 232, 0.22);
+}
+
+.ticket-notch::before,
+.ticket-notch::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: var(--color-night);
+  border-radius: 50%;
+  left: var(--notch-left, 68%);
+  z-index: 2;
+}
+
+.ticket-notch::before {
+  top: -11px;
+}
+
+.ticket-notch::after {
+  bottom: -11px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
